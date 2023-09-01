@@ -51,7 +51,7 @@ inprep_data <- bib %>%
 
 ## Published
 
-`r paste0(pub_data)`
+`r pub_data`
 
 ## Preprints
 
