@@ -3,18 +3,20 @@ project:
   output-dir: docs
 
 website:
-  title: "mdrnao.github.io"
+  title: "Holly Hall"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: publications.qmd
+        text: Publications
 
 format:
   html:
     theme: flatly
     css: styles.css
     toc: true
+    
 
 editor: visual
 

@@ -1,0 +1,62 @@
+---
+title: "Publications"
+bibliography: references.bib
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| include: false
+require(dplyr)
+bib <- bib2df::bib2df("references.bib", separate_names = T)
+
+bib$author = unlist(lapply(bib$AUTHOR, function(x) paste(unlist(x["full_name"]), collapse = ",  ")))
+
+bib <- bib %>%
+  mutate(author = gsub("Holly Hall", "<strong>Holly Hall</strong>", author),
+         author = gsub("H. Hall", "<strong>Holly Hall</strong>", author)
+         )  %>% 
+  arrange(desc(YEAR), MONTH) 
+
+pub_data <- bib %>%
+  filter(CATEGORY == "ARTICLE") %>%
+  select(author, TITLE, YEAR, MONTH, JOURNAL, URL) %>%
+  glue::glue_data(
+    "<p>{author} ({YEAR}). <a href={URL} target='_blank'>{TITLE}</a>. *{JOURNAL}*</p>"
+  ) %>%
+  glue::glue_collapse()
+
+
+prep_data <- bib %>%
+  filter(CATEGORY == "PREPR") %>%
+  select(author, TITLE, YEAR, MONTH, JOURNAL, URL) %>%
+  glue::glue_data(
+    "<p>{author} ({YEAR}). <a href={URL} target='_blank'>{TITLE}</a>. *preprint*</p>\n"
+  ) %>%
+  glue::glue_collapse()
+
+inprep_data <- bib %>%
+  filter(CATEGORY == "INPREP") %>%
+  select(author, TITLE, YEAR, MONTH) %>%
+  glue::glue_data(
+    "<div>{author} ({YEAR}). <a href= target='_blank'>{TITLE}</a>. *In prep*</div>"
+  ) %>%
+  glue::glue_collapse()
+
+
+
+
+```
+
+
+## Published
+
+`r paste0(pub_data)`
+
+## Preprints
+
+`r prep_data`
+
+## In progress
+
+`r inprep_data`
