@@ -1,0 +1,56 @@
+---
+title: "Publications how-to"
+description: "How I finally made a citation list look how I wanted it to"
+author: 
+  - name: Holly Hall
+    url: https://mdrnao.github.io
+date: 09-01-2023
+categories: [Quarto, R, website, html]
+bibliography: references.bib
+image: publications.jpeg
+---
+
+```{r}
+#| include: false
+#| eval: false
+R is my safe space. So, when asked in a panic for a nicely formatted CV by my husband, I naturally turned to R. After some frantic googling (I only had a day!) I found some amazing templates and successfully hacked something together. However, I realised that whilst I understood enough TeX/html/css to successfully make a CV, I couldn't quite do everything I wanted. 
+
+One thing which really bugged me was the citation formatting. Whilst I need to start learning latex formatting properly to get it working for a pdf, I could do it in R. 
+```
+
+## Making the references bibtex file
+
+Here I was pretty lazy and utilised Quarto's fantastic citation tool to create a nicely formatted bibtex file.
+
+-   Click on insert whilst using Rstudio's visual editor - this will bring up a pop up with multiple options.
+-   Click on the left hand side panel on pubmed - I then searched my name and found my existing publications and added them using the little plus button
+-   For my preprints - these are on research square so I searched the DOI
+-   I then clicked insert
+-   I navigated to the newly created references.bib file and opened it up
+-   I changed the preprints from "\@misc" to my own "\@prepr"
+-   I then created entries for my papers I'm writing at the moment - copy and paste one before (only need authors, title, year)[@glue]
+
+This page will work with any bibtex file, manual or otherwise!
+
+## Formatting the data in R
+
+I used a mixture of dplyr [@dplyr] for its piping and bib2df [@bib2df] because it creates a wonderful dataframe. I set `separate_names = T` then collected the full author name from the list-data using `bib$author = unlist(lapply(bib$AUTHOR, function(x) paste(unlist(x["full_name"]), collapse = ",  ")))` so that the names are formatted how I wanted.
+
+I wanted my name to be highlighted so I made it bold. To do this, I used `gsub` to add bold syntax around my name only: `<strong> name </strong>`. This also worked with the markdown standard `** name **`.
+
+I sorted all the table in order of publication, then created three different tables for my publication groups (published, preprints, in prep). Each followed the same format: filter, select the right columns, paste the right syntax. I used glue [@glue] to create the right html format.
+
+-   `<p\> text </p>` is html to indicate a new paragraph?
+-   `{column title}` to use a variable/column from the df
+-   `<a href={URL} target='\_blank'>{TITLE} </a>` for the title of the paper
+    -   `<a>` is html for a link
+    -   `href` to give it the site pointer
+    -   `target` specifies where to open the linked document
+
+Took me forever to work out I needed to use `glue_collapse` afterwards, otherwise I ended up with rogue commas on new lines.
+
+## Need to have a think how to transfer this to pdf
+
+-   Separate names flag will make it easier to exract just the first initial from the first name. This will help to compress some of the author lists.
+
+But that is for another eve...

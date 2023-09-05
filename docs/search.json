@@ -1,10 +1,38 @@
 [
   {
+    "objectID": "posts/20230901_publications_how_to/index.html",
+    "href": "posts/20230901_publications_how_to/index.html",
+    "title": "Publications how-to",
+    "section": "",
+    "text": "Here I was pretty lazy and utilised Quarto’s fantastic citation tool to create a nicely formatted bibtex file.\n\nClick on insert whilst using Rstudio’s visual editor - this will bring up a pop up with multiple options.\nClick on the left hand side panel on pubmed - I then searched my name and found my existing publications and added them using the little plus button\nFor my preprints - these are on research square so I searched the DOI\nI then clicked insert\nI navigated to the newly created references.bib file and opened it up\nI changed the preprints from “@misc” to my own “@prepr”\nI then created entries for my papers I’m writing at the moment - copy and paste one before (only need authors, title, year)(Hester and Bryan 2022)\n\nThis page will work with any bibtex file, manual or otherwise!"
+  },
+  {
+    "objectID": "posts/20230901_publications_how_to/index.html#making-the-references-bibtex-file",
+    "href": "posts/20230901_publications_how_to/index.html#making-the-references-bibtex-file",
+    "title": "Publications how-to",
+    "section": "",
+    "text": "Here I was pretty lazy and utilised Quarto’s fantastic citation tool to create a nicely formatted bibtex file.\n\nClick on insert whilst using Rstudio’s visual editor - this will bring up a pop up with multiple options.\nClick on the left hand side panel on pubmed - I then searched my name and found my existing publications and added them using the little plus button\nFor my preprints - these are on research square so I searched the DOI\nI then clicked insert\nI navigated to the newly created references.bib file and opened it up\nI changed the preprints from “@misc” to my own “@prepr”\nI then created entries for my papers I’m writing at the moment - copy and paste one before (only need authors, title, year)(Hester and Bryan 2022)\n\nThis page will work with any bibtex file, manual or otherwise!"
+  },
+  {
+    "objectID": "posts/20230901_publications_how_to/index.html#formatting-the-data-in-r",
+    "href": "posts/20230901_publications_how_to/index.html#formatting-the-data-in-r",
+    "title": "Publications how-to",
+    "section": "Formatting the data in R",
+    "text": "Formatting the data in R\nI used a mixture of dplyr (Wickham et al. 2023) for its piping and bib2df (Ottolinger 2019) because it creates a wonderful dataframe. I set separate_names = T then collected the full author name from the list-data using bib$author = unlist(lapply(bib$AUTHOR, function(x) paste(unlist(x[\"full_name\"]), collapse = \",  \"))) so that the names are formatted how I wanted.\nI wanted my name to be highlighted so I made it bold. To do this, I used gsub to add bold syntax around my name only: &lt;strong&gt; name &lt;/strong&gt;. This also worked with the markdown standard ** name **.\nI sorted all the table in order of publication, then created three different tables for my publication groups (published, preprints, in prep). Each followed the same format: filter, select the right columns, paste the right syntax. I used glue (Hester and Bryan 2022) to create the right html format.\n\n&lt;p\\&gt; text &lt;/p&gt; is html to indicate a new paragraph?\n{column title} to use a variable/column from the df\n&lt;a href={URL} target='\\_blank'&gt;{TITLE} &lt;/a&gt; for the title of the paper\n\n&lt;a&gt; is html for a link\nhref to give it the site pointer\ntarget specifies where to open the linked document\n\n\nTook me forever to work out I needed to use glue_collapse afterwards, otherwise I ended up with rogue commas on new lines."
+  },
+  {
+    "objectID": "posts/20230901_publications_how_to/index.html#need-to-have-a-think-how-to-transfer-this-to-pdf",
+    "href": "posts/20230901_publications_how_to/index.html#need-to-have-a-think-how-to-transfer-this-to-pdf",
+    "title": "Publications how-to",
+    "section": "Need to have a think how to transfer this to pdf",
+    "text": "Need to have a think how to transfer this to pdf\n\nSeparate names flag will make it easier to exract just the first initial from the first name. This will compress some of the author lists.\n\nBut that is for another eve…"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Hi!",
     "section": "",
-    "text": "I’m Holly, a post-doc at CRUK Beatson Institute in Prof Crispin Miller’s group.\nI’m attempting to learn how to properly use Quarto, especially lua, HTML, and CSS. They say the best way to learn is doing… so here’s my attempt at doing. A blog may appear to pretend I’m teaching - let’s see if I get that far!"
+    "text": "I’m Holly, a post-doc at CRUK Beatson Institute in Prof Crispin Miller’s group.\nI’m attempting to learn how to properly use Quarto, especially lua, HTML, and CSS. They say the best way to learn is doing… so here’s my attempt at doing."
   },
   {
     "objectID": "publications.html",
@@ -33,5 +61,19 @@
     "title": "Publications",
     "section": "In progress",
     "text": "In progress\n\nHolly Hall, Andrew Papanastasiou, Crispin Miller (2024). Integration of transcriptomes from model systems of cancer. In prep\n\n\nHolly Hall, Bashir A. Mohamed, Sergio Lilla, Matthew Nielson, Sara Zanivana, Ania Wilczynska, Crispin Miller, Martin Bushell (2023). Codon usage patterns play a central role in cell state-dependent gene expression dynamics. In prep"
+  },
+  {
+    "objectID": "posts.html",
+    "href": "posts.html",
+    "title": "Blog posts",
+    "section": "",
+    "text": "HuMo app\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPublications how-to\n\n\n\nQuarto\n\n\nR\n\n\nwebsite\n\n\nhtml\n\n\n\nHow I finally made a citation list look how I wanted it to\n\n\n\nHolly Hall\n\n\nSep 1, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/20230904_HuMo_app/index.html",
+    "href": "posts/20230904_HuMo_app/index.html",
+    "title": "Untitled",
+    "section": "",
+    "text": "&lt;iframe height=\"400\" width=\"100%\" frameborder=\"no\" src=\"https://datasciencegenie.shinyapps.io/MyShinyApp/\"&gt; &lt;/iframe&gt;"
   }
 ]

@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Holly Hall">
+<meta name="dcterms.date" content="2023-09-01">
+<meta name="description" content="How I finally made a citation list look how I wanted it to">
 
-<title>Holly Hall - Hi!</title>
+<title>Holly Hall - Publications how-to</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,24 +23,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -59,17 +82,17 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Holly Hall</span>
     </a>
   </div>
@@ -80,15 +103,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./publications.html" rel="" target="">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
  <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./posts.html" rel="" target="">
+    <a class="nav-link" href="../../posts.html" rel="" target="">
  <span class="menu-text">Notes</span></a>
   </li>  
 </ul>
@@ -99,43 +122,118 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Publications how-to</h1>
+                  <div>
+        <div class="description">
+          How I finally made a citation list look how I wanted it to
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Quarto</div>
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">website</div>
+                <div class="quarto-category">html</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="https://mdrnao.github.io">Holly Hall</a> </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 1, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#making-the-references-bibtex-file" id="toc-making-the-references-bibtex-file" class="nav-link active" data-scroll-target="#making-the-references-bibtex-file">Making the references bibtex file</a></li>
+  <li><a href="#formatting-the-data-in-r" id="toc-formatting-the-data-in-r" class="nav-link" data-scroll-target="#formatting-the-data-in-r">Formatting the data in R</a></li>
+  <li><a href="#need-to-have-a-think-how-to-transfer-this-to-pdf" id="toc-need-to-have-a-think-how-to-transfer-this-to-pdf" class="nav-link" data-scroll-target="#need-to-have-a-think-how-to-transfer-this-to-pdf">Need to have a think how to transfer this to pdf</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-jolla">
-  <img src="aaa.jpeg" class="about-image
-  round " style="height: 15em; width: 15em;">
- <header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Hi!</h1>
-</div>
-<div class="quarto-title-meta">
-  </div>
-</header><main class="content" id="quarto-document-content">
-<p>I’m Holly, a post-doc at <a href="https://www.beatson.gla.ac.uk">CRUK Beatson Institute</a> in <a href="https://www.beatson.gla.ac.uk/beatson-research/beatson-research-groups/crispin-miller-computational-biology.html">Prof Crispin Miller’s</a> group.</p>
-<p>I’m attempting to learn how to properly use <a href="https://quarto.org">Quarto</a>, especially lua, HTML, and CSS. They say the best way to learn is doing… so here’s my attempt at doing.</p>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
-</main> 
-  <hr class="about-sep">
-   <div class="about-links">
-  <a href="https://www.linkedin.com/in/holly-hall-968a1241/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text"></span>
-  </a>
-  <a href="https://github.com/mdrnao" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text"></span>
-  </a>
-  <a href="mailto:h.hall@beatson.gla.ac.uk" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text"></span>
-  </a>
+
+
+<section id="making-the-references-bibtex-file" class="level2">
+<h2 class="anchored" data-anchor-id="making-the-references-bibtex-file">Making the references bibtex file</h2>
+<p>Here I was pretty lazy and utilised Quarto’s fantastic citation tool to create a nicely formatted bibtex file.</p>
+<ul>
+<li>Click on insert whilst using Rstudio’s visual editor - this will bring up a pop up with multiple options.</li>
+<li>Click on the left hand side panel on pubmed - I then searched my name and found my existing publications and added them using the little plus button</li>
+<li>For my preprints - these are on research square so I searched the DOI</li>
+<li>I then clicked insert</li>
+<li>I navigated to the newly created references.bib file and opened it up</li>
+<li>I changed the preprints from “@misc” to my own “@prepr”</li>
+<li>I then created entries for my papers I’m writing at the moment - copy and paste one before (only need authors, title, year)<span class="citation" data-cites="glue">(<a href="#ref-glue" role="doc-biblioref">Hester and Bryan 2022</a>)</span></li>
+</ul>
+<p>This page will work with any bibtex file, manual or otherwise!</p>
+</section>
+<section id="formatting-the-data-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="formatting-the-data-in-r">Formatting the data in R</h2>
+<p>I used a mixture of dplyr <span class="citation" data-cites="dplyr">(<a href="#ref-dplyr" role="doc-biblioref">Wickham et al. 2023</a>)</span> for its piping and bib2df <span class="citation" data-cites="bib2df">(<a href="#ref-bib2df" role="doc-biblioref">Ottolinger 2019</a>)</span> because it creates a wonderful dataframe. I set <code>separate_names = T</code> then collected the full author name from the list-data using <code>bib$author = unlist(lapply(bib$AUTHOR, function(x) paste(unlist(x["full_name"]), collapse = ",  ")))</code> so that the names are formatted how I wanted.</p>
+<p>I wanted my name to be highlighted so I made it bold. To do this, I used <code>gsub</code> to add bold syntax around my name only: <code>&lt;strong&gt; name &lt;/strong&gt;</code>. This also worked with the markdown standard <code>** name **</code>.</p>
+<p>I sorted all the table in order of publication, then created three different tables for my publication groups (published, preprints, in prep). Each followed the same format: filter, select the right columns, paste the right syntax. I used glue <span class="citation" data-cites="glue">(<a href="#ref-glue" role="doc-biblioref">Hester and Bryan 2022</a>)</span> to create the right html format.</p>
+<ul>
+<li><code>&lt;p\&gt; text &lt;/p&gt;</code> is html to indicate a new paragraph?</li>
+<li><code>{column title}</code> to use a variable/column from the df</li>
+<li><code>&lt;a href={URL} target='\_blank'&gt;{TITLE} &lt;/a&gt;</code> for the title of the paper
+<ul>
+<li><code>&lt;a&gt;</code> is html for a link</li>
+<li><code>href</code> to give it the site pointer</li>
+<li><code>target</code> specifies where to open the linked document</li>
+</ul></li>
+</ul>
+<p>Took me forever to work out I needed to use <code>glue_collapse</code> afterwards, otherwise I ended up with rogue commas on new lines.</p>
+</section>
+<section id="need-to-have-a-think-how-to-transfer-this-to-pdf" class="level2">
+<h2 class="anchored" data-anchor-id="need-to-have-a-think-how-to-transfer-this-to-pdf">Need to have a think how to transfer this to pdf</h2>
+<ul>
+<li>Separate names flag will make it easier to exract just the first initial from the first name. This will compress some of the author lists.</li>
+</ul>
+<p>But that is for another eve…</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-glue" class="csl-entry" role="listitem">
+Hester, Jim, and Jennifer Bryan. 2022. <span>“Glue: Interpreted String Literals.”</span> <a href="https://CRAN.R-project.org/package=glue">https://CRAN.R-project.org/package=glue</a>.
 </div>
+<div id="ref-bib2df" class="csl-entry" role="listitem">
+Ottolinger, Philipp. 2019. <span>“Bib2df: Parse a BibTeX File to a Data Frame.”</span> <a href="https://CRAN.R-project.org/package=bib2df">https://CRAN.R-project.org/package=bib2df</a>.
 </div>
- <!-- /main -->
+<div id="ref-dplyr" class="csl-entry" role="listitem">
+Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. <span>“Dplyr: A Grammar of Data Manipulation.”</span> <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -156,6 +254,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
