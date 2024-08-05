@@ -48,7 +48,6 @@ inprep_data <- bib %>%
 
 ```
 
-
 ## Published
 
 `r pub_data`
