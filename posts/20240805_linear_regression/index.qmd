@@ -1,0 +1,263 @@
+---
+title: "Linear regression"
+description: "Reviewing the basics of linear regression"
+author: 
+  - name: Holly Hall
+    url: https://mdrnao.github.io
+date: 08-05-2024
+categories: [machine learning, basics, linear regression, K-fold]
+bibliography: references.bib
+image: image.png
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+## Purpose
+
+Linear regression is used to predict the real value of a dependent value (target) from one or more independent values (features)
+
+## Assumptions
+
+Linearity, independent, normally distributed, and homoscadasticity (constant variance).
+
+### Linearity
+
+Can be tested via:
+
+1.  Visual inspection of a scatter plot
+
+2.  Correlation coefficient - near to zero the values are unlikely to be linear, 1 or -1 indicates a strong linear relationship
+
+### Outliers
+
+Assumed that there are no/few extreme values which aren't representative of the actual relationship between the values. Can be tested by boxplots.
+
+## Simple linear regression
+
+### Aim
+
+Simple linear regression is where there is one predictor value and the goal is to create a mapping function. $y = \beta_0 + \beta_1 h$ where $y$ is a continuous value, $\beta_0$ is the intercept, and $\beta_1$ is the slope. We aim to predict the coefficients to place the line as close as possible to all the data points in the training set $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 h$ .
+
+### Cost
+
+-   Cost function to minimise = Residual Sum of Squares (RSE): $RSS = \sum_{i} (y_i - \hat{y}_i)^2 = \sum_{i}(y_i -\hat{\beta}_0 - \hat{\beta}_1 x_i)^2$
+-   Use Least Squared Error (LSE) to find the betas, such that the RSS is minimised.
+-   Once the model is fitted, evaluate with Mean Squared Error (MSE) metric: the average of the difference between the actual and the predicted values. Also a good metric to compare two models on the same dataset.
+-   
+
+## Practical example
+
+First we pull in a data set to play with. We'll pull in the Boston Housing dataset, and try to predict the cost of a home (median value of owner-occupied homes in USD 1000's: colname medv) by the average number of rooms per home.
+
+```{r}
+#| include: false
+
+require(dplyr); require(ggplot2); require(cowplot)
+data("BostonHousing2", package = "mlbench")
+
+```
+
+```{r}
+head(BostonHousing2)
+
+```
+
+### QC plots
+
+First, we can have a look at a scatter plot between the predictor and the response variable:
+
+```{r}
+ggplot(BostonHousing2, aes(medv, rm)) +
+  geom_point() +
+  theme_classic() +
+    panel_border(color = "black") 
+```
+
+Here you can see the suggestion of a linear increasing relationship of the cost of a home by the number of rooms.
+
+Next, check outliers by boxplot:
+
+```{r}
+plot_grid(
+  ggplot(BostonHousing2, aes(1, medv)) +
+    geom_boxplot() +
+    theme_classic() +
+    panel_border(color = "black") +
+    theme(axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_blank()
+          ) +
+    labs(title = "Value"),
+  ggplot(BostonHousing2, aes(1, rm)) +
+    geom_boxplot() +
+    theme_classic() +
+    panel_border(color = "black") +
+    theme(axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_blank()
+          ) +
+    labs(title = "Ave. N. rooms")
+    
+    
+)
+
+```
+
+Generally, outliers are shown as points which lay outside of the 25th and 75th percentile values. Looks like we have a fair few.
+
+Check correlation for linear dependency:
+
+```{r}
+cor.test(BostonHousing2$medv, BostonHousing2$rm)
+
+```
+
+Check normality using a density plot:
+
+```{r}
+plot_grid(
+  ggplot(BostonHousing2, aes(medv)) +
+    geom_density() +
+    theme_classic() +
+    panel_border(color = "black") +
+    labs(title = "Value"),
+  ggplot(BostonHousing2, aes( rm)) +
+    geom_density() +
+    theme_classic() +
+    panel_border(color = "black") +
+    labs(title = "Ave. N. rooms")
+)
+    
+
+```
+
+### Create model
+
+```{r}
+# This creates a simple linear regression model 
+model <- lm(medv ~ rm, data = BostonHousing2)
+print(model)
+```
+
+Look at the model in more depth:
+
+```{r}
+summary(model)
+```
+
+-   p-value: is the result statistically significant? Is there a relationship between the dependent and the independent variables?
+-   t value: how likely is the coefficient is not equal to zero by chance
+-   R-squared gives you the proportion of variation explained by the model (higher better).
+-   The adjusted R squared is best for comparing models, as it penalises the model for the number of predictors you have in the model (higher better).
+-   SE and F-statistic: measures of goodness of fit (closer to zero, higher better, respectively)
+
+We can also calculate the AIC and BIC, for more goodness of fit values.
+
+### Use for prediction
+
+Create test and train datasets
+
+```{r}
+trainingIndex <- sample(1:nrow(BostonHousing2), 0.8*nrow(BostonHousing2))
+
+train <- BostonHousing2[trainingIndex,]
+test <- BostonHousing2[-trainingIndex,]
+
+```
+
+Build the model on the training data, and predict
+
+```{r}
+lmModel <- lm(medv ~ rm, data = train)
+pred1 <- predict(lmModel, test)
+
+```
+
+Review QC
+
+```{r}
+summary(lmModel)
+```
+
+Looks like it is significant, and the adjusted R squared are comparative to the whole dataset.
+
+How do the predicted values compare to the original?
+
+```{r}
+actualComp <- data.frame(cbind(original = test$medv, predicted = pred1))
+cor_actual <- cor(actualComp)
+
+head(actualComp)
+
+```
+
+```{r}
+min_max_accuracy <- mean(apply(actualComp, 1, min) / apply(actualComp, 1, max))  
+mape <- mean(abs((actualComp$predicted - actualComp$original))/actualComp$original)  
+
+```
+
+mean absolute percentage deviation is `{r} round(mape,2)`
+
+### How do we know the sampling isn't biased? 
+
+We can use k-fold validation! Here, we use the same proportional split of the data, but we split the data into "k" mutually exclusive random samples. This allows us to check that the prediction accuracy isn't changing much, and the slopes/intercepts aren't changing much between models.
+
+```{r}
+require(DAAG)
+
+cvResults <- suppressWarnings(
+  CVlm(BostonHousing2, 
+       form.lm= formula(medv ~ rm),
+       m=5, 
+       dots=FALSE, 
+       seed=29, 
+       legend.pos="topleft",  
+       printit=FALSE, 
+       main="Small symbols are predicted values while bigger ones are actuals.")
+  )
+attr(cvResults, 'ms')  
+```
+
+or we can loop it:
+
+```{r}
+modelList <- list()
+
+for(i in 1:5){
+  trainingIndex <- sample(1:nrow(BostonHousing2), 0.8*nrow(BostonHousing2))
+
+train <- BostonHousing2[trainingIndex,]
+test <- BostonHousing2[-trainingIndex,]
+lmModel <- lm(medv ~ rm, data = train)
+modelList[[paste0("fold", i)]] <- lmModel
+}
+
+unlist(lapply(modelList, function(x) AIC(x)))
+
+```
+
+Doesn't seem to change much with other splits of the data!
+
+What if we add another factor to the model like crime?
+
+```{r}
+modelList1 <- list()
+
+for(i in 1:5){
+  trainingIndex <- sample(1:nrow(BostonHousing2), 0.8*nrow(BostonHousing2))
+
+train <- BostonHousing2[trainingIndex,]
+test <- BostonHousing2[-trainingIndex,]
+lmModel <- lm(medv ~  rm +crim, data = train)
+modelList1[[paste0("fold", i)]] <- lmModel
+}
+
+unlist(lapply(modelList1, function(x) AIC(x)))
+```
+
+Doesn't seem to add much benefit!
