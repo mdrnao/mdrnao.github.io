@@ -251,7 +251,8 @@ window.Quarto = {
 
 <section id="purpose" class="level2">
 <h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
-<p>Linear regression is used to predict the real value of a dependent value (target) from one or more independent values (features)</p>
+<p>Linear regression is used to predict the real value of a dependent value (target) from one or more independent values (features).</p>
+<p>The main idea is to fit a best-fit line for data.</p>
 </section>
 <section id="assumptions" class="level2">
 <h2 class="anchored" data-anchor-id="assumptions">Assumptions</h2>
@@ -281,7 +282,6 @@ window.Quarto = {
 <li>Cost function to minimise = Residual Sum of Squares (RSE): <span class="math inline">\(RSS = \sum_{i} (y_i - \hat{y}_i)^2 = \sum_{i}(y_i -\hat{\beta}_0 - \hat{\beta}_1 x_i)^2\)</span></li>
 <li>Use Least Squared Error (LSE) to find the betas, such that the RSS is minimised.</li>
 <li>Once the model is fitted, evaluate with Mean Squared Error (MSE) metric: the average of the difference between the actual and the predicted values. Also a good metric to compare two models on the same dataset.</li>
-<li></li>
 </ul>
 </section>
 </section>
@@ -500,18 +500,18 @@ lm(formula = medv ~ rm, data = train)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--23.248  -2.482   0.202   3.070  39.670 
+-23.158  -2.792   0.109   3.117  39.096 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -35.0881     2.9872  -11.75   &lt;2e-16 ***
-rm            9.1385     0.4744   19.26   &lt;2e-16 ***
+(Intercept) -33.6481     3.0676  -10.97   &lt;2e-16 ***
+rm            8.9643     0.4861   18.44   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 6.501 on 402 degrees of freedom
-Multiple R-squared:   0.48, Adjusted R-squared:  0.4787 
-F-statistic: 371.1 on 1 and 402 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 6.897 on 402 degrees of freedom
+Multiple R-squared:  0.4583,    Adjusted R-squared:  0.4569 
+F-statistic: 340.1 on 1 and 402 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Looks like it is significant, and the adjusted R squared are comparative to the whole dataset.</p>
@@ -526,12 +526,12 @@ F-statistic: 371.1 on 1 and 402 DF,  p-value: &lt; 2.2e-16</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   original predicted
-6      28.7  23.67251
-25     15.6  19.04843
-29     18.4  24.26651
-47     20.0  17.78731
-50     19.4  16.10583
-86     26.6  25.50021</code></pre>
+6      28.7  23.99209
+9      16.5  16.82965
+23     15.2  21.41039
+24     14.5  18.46114
+25     15.6  19.45618
+26     13.9  16.54279</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -541,7 +541,7 @@ F-statistic: 371.1 on 1 and 402 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mape <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>((actualComp<span class="sc">$</span>predicted <span class="sc">-</span> actualComp<span class="sc">$</span>original))<span class="sc">/</span>actualComp<span class="sc">$</span>original)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>mean absolute percentage deviation is 0.22</p>
+<p>mean absolute percentage deviation is 0.24</p>
 </section>
 <section id="how-do-we-know-the-sampling-isnt-biased" class="level3">
 <h3 class="anchored" data-anchor-id="how-do-we-know-the-sampling-isnt-biased">How do we know the sampling isn’t biased?</h3>

@@ -18,7 +18,9 @@ format:
 
 ## Purpose
 
-Linear regression is used to predict the real value of a dependent value (target) from one or more independent values (features)
+Linear regression is used to predict the real value of a dependent value (target) from one or more independent values (features).
+
+The main idea is to fit a best-fit line for data.
 
 ## Assumptions
 
@@ -47,7 +49,6 @@ Simple linear regression is where there is one predictor value and the goal is t
 -   Cost function to minimise = Residual Sum of Squares (RSE): $RSS = \sum_{i} (y_i - \hat{y}_i)^2 = \sum_{i}(y_i -\hat{\beta}_0 - \hat{\beta}_1 x_i)^2$
 -   Use Least Squared Error (LSE) to find the betas, such that the RSS is minimised.
 -   Once the model is fitted, evaluate with Mean Squared Error (MSE) metric: the average of the difference between the actual and the predicted values. Also a good metric to compare two models on the same dataset.
--   
 
 ## Practical example
 

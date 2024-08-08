@@ -1,0 +1,191 @@
+---
+title: "PCA"
+description: "Reviewing the basics of Principle Component Analysis"
+author: 
+  - name: Holly Hall
+    url: https://mdrnao.github.io
+date: 08-06-2024
+categories: [ basics, PCA]
+bibliography: references.bib
+image: image.png
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+## Purpose
+
+As data gets complex with many samples/measurements, we end up with many dimensions to consider for a given dataset.
+
+PCA is a linear dimensionality reduction tool, utilising Singular Value Decomposition, to project many dimensions into a lower dimension space and therefore capture the most important information from it. PCA finds the best fitted line by maximising the sum of the squared distances between the projected points to the origin. It finds the best linear combination of variables to maximise distance of samples.
+
+## Practical example
+
+Let's use the popular Iris data set, with the goal of predicting iris species from sepal and petal information.
+
+Here, we have measurements of sepal length and width, as well as petal width and length, for three iris species.
+
+```{r}
+suppressPackageStartupMessages({
+  require(dplyr);require(ggplot2);require(cowplot)
+})
+data(iris)
+str(iris)
+
+```
+
+We can plot each variable against one another, to see how the relationship between the variables changes:
+
+```{r}
+plot_grid(
+  
+  ggplot(iris, aes(Sepal.Length ,Sepal.Width )) +
+  geom_point() +
+  theme_classic() +
+  panel_border(color = "black") +
+  ggpubr::stat_cor() ,
+  ggplot(iris, aes(Petal.Length, Petal.Width )) +
+  geom_point() +
+  theme_classic() +
+  panel_border(color = "black")+
+  ggpubr::stat_cor() 
+
+)
+```
+
+Here we can see that Sepal length and width are not related, but petal length and width are. This gets tedious if we have many variables, which is where PCA comes in.
+
+A crucial first step is checking for missing values and normalisation of the data. The data should at least be centered, but can also be scaled. Scaling is more important if the measurements using different units/scales.
+
+```{r}
+
+colSums(is.na(iris))
+
+iris.list <- list(
+  raw = iris[,1:4],
+  scaled = scale(iris[,1:4]),
+  species = iris$Species
+  
+)
+```
+
+### Performing PCA 
+
+```{r}
+pca = princomp(iris.list$scaled)
+pca.ind = factoextra::get_pca_ind(pca)
+pca.var = factoextra::get_pca_var(pca)
+
+summary(pca)
+```
+
+For components have been generated, which is equal to the number of variables of the data.
+
+In PCA to split the covariance (or correlation) matrix into scale parts (eigenvalues) and direction (eigevectors). Eigenvectors with scale are loadings.
+
+Eigenvector is just a coefficient of orthogonal *transformation* or projection, it is devoid of "load" within its value. "Load" is (information of the amount of) variance, magnitude. PCs are extracted to explain variance of the variables. Eigenvalues are the variances of (= explained by) PCs. When we multiply eigenvector by sq.root of the eivenvalue we "load" the bare coefficient by the amount of variance. By that virtue we make the coefficient to be the measure of *association*, co-variability.
+
+The loadings can be considered the coefficients of the linear combination of the original variables in the dataset, from which the PCs are computed. Larger the magnitude of the values are, the more important it is to that component. Positive values indicate that it's presence is important, whereas negative values indicate its lack of presence is significant.
+
+```{r}
+pca$loadings
+```
+
+In this example, the first component has high positive values for everything apart from sepal width, which is relatively negative. The second component has high value for width. The first PC is the linear combination PC1 = 0.52\*SepalLength – 0.27\*SepalWidth + 0.58\*PetalLength + 0.56\*PetalWidth. You can interpret this as a contrast between the SepalWidth variable and an equally weighted sum of the other variables.
+
+### Visualisation
+
+#### Scree plot
+
+We can first look at a scree plot. This is used to visualise the importance of each PC and can be used to determine how many components (eigenvalues) you need for a reasonably accurate representation of the original data. This is important as the visualisation of 4+ variables is rather difficult!
+
+```{r}
+# compute total variance
+variance = pca$sdev^2 / sum(pca$sdev^2)
+
+require(ggplot2); require(cowplot)
+data.frame(
+  PC = paste0("PC", 1:4),
+  variance
+) %>%
+  mutate(cumSum = cumsum(variance)) %>%
+  ggplot(aes(PC, variance)) +
+  geom_hline(yintercept = 0.96, linetype = 2) +
+  geom_col() +
+  theme_classic() +
+  panel_border() +
+  geom_point(aes(y=cumSum),
+             size = 3, 
+             shape = 15,
+             colour = "deeppink"
+             ) +
+  geom_line(aes(y=cumSum, group = 1),
+            colour = "deeppink")
+
+```
+
+Each bar is the amount of variance for each PC, and the points represent the cumulative sum of the variance. Here, we can see that the first two components capture 96% of the variance in the dataset together (dashed line).
+
+#### Profile plot
+
+This gives the correlation of each of the original variables and their contribution to each dimension.
+
+```{r}
+pca.var$cor %>%
+  data.frame() %>%
+  tibble::rownames_to_column("Variable") %>%
+  tidyr::pivot_longer(cols = 2:5) %>%
+  ggplot(aes(x=Variable, y=value, colour = name)) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  theme_classic() +
+  panel_border(colour = "black") +
+  geom_point() +
+  geom_line(aes(group = name)) +
+  labs(y= "Correlation",
+       colour = "PC") +
+  scale_colour_manual(values = c("#D1495BFF","#2E4057FF","#66A182FF","#F9771EFF"))
+```
+
+PC1 is highly correlated with petal length and width, as well as sepal length, but negatively correlated with sepal width. PC2 is highly correlated with sepal width, and to a lesser extent sepal length. The third and fourth have weak correlations.
+
+We can also plot this as a pattern plot:
+
+```{r}
+pca.var$cor %>%
+  data.frame() %>%
+  tibble::rownames_to_column("Variable") %>%
+  ggplot(aes(x=Dim.1, y=Dim.2)) +
+  geom_hline(yintercept = 0, linetype = 2) +
+  geom_vline(xintercept = 0, linetype = 2) +
+  theme_classic() +
+  panel_border(colour = "black") +
+  geom_point() +
+  ggrepel::geom_text_repel(aes(label = Variable)) 
+
+```
+
+#### Score plot
+
+The score plot visualises the projection of the original data into the projected space, utilising the "formula" of each variable contribution to the PC.
+
+```{r}
+ggplot(pca.ind$coord, aes(Dim.1, Dim.2, colour = iris.list$species)) +
+  geom_hline(yintercept = 0, linetype=2) +
+  geom_vline(xintercept = 0, linetype=2) +
+  geom_point() +
+  theme_classic() +
+  panel_border(colour = "black") +
+  labs(colour = "Species") +
+  scale_colour_manual(values = c("#2E4057FF","#66A182FF", "#D1495BFF"))
+```
+
+We can see that setosa species forms its own group to the left of PC1, with versicolor and virginica to the left. The loadings can also be plotted ontop of the scores plot, otherwise known as a biplot.
+
+```{r}
+factoextra::fviz_pca_biplot(pca)
+```
+
+*More to come...*
