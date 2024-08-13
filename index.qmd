@@ -14,5 +14,4 @@ about:
 
 I'm Holly, a post-doc at [CRUK Beatson Institute](https://www.beatson.gla.ac.uk) in [Prof Crispin Miller's](https://www.beatson.gla.ac.uk/beatson-research/beatson-research-groups/crispin-miller-computational-biology.html) group.
 
-I'm attempting to learn how to properly use [Quarto](https://quarto.org), especially lua, HTML, and CSS. They say the best way to learn is doing... so here's my attempt at doing. 
-
+I'm attempting to learn how to properly use [Quarto](https://quarto.org), especially lua, HTML, and CSS. I also am refreshing my knowledge of the fundamentals of statistics and ML, mostly focusing on the practical application. They say the best way to learn is doing... so here's my attempt at doing.
