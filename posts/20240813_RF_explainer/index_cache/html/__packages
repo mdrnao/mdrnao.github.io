@@ -1,0 +1,17 @@
+matrixStats
+MatrixGenerics
+BiocGenerics
+S4Vectors
+IRanges
+GenomeInfoDb
+GenomicRanges
+Biobase
+SummarizedExperiment
+recount3
+dplyr
+ggplot2
+cowplot
+fst
+randomForest
+randomForestExplainer
+biomaRt
