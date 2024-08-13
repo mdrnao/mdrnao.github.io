@@ -3,8 +3,8 @@
     "listing": "/posts.html",
     "items": [
       "/posts/20230904_HuMo_app/index.html",
-      "/posts/20240806_PCA/index.html",
-      "/posts/20240808_UMAP/index.html",
+      "/posts/20240806_UMAP/index.html",
+      "/posts/20240808_PCA/index.html",
       "/posts/20240805_linear_regression/index.html",
       "/posts/20230901_publications_how_to/index.html"
     ]
