@@ -7,7 +7,7 @@ author:
 date: 08-13-2024
 categories: [machine learning, basics, explainer, TCGA, random forest]
 bibliography: references.bib
-image: image.png
+image: image.jpeg
 editor_options: 
   chunk_output_type: console
 format:
