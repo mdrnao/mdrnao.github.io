@@ -22,6 +22,8 @@ Predictive models with complex structures can be effectively developed using ran
 
 However, they can sometimes operate as a "black box," making it challenging to interpret their inner workings. To address this, it's valuable to examine the model to identify which variables most significantly contribute to prediction accuracy. Here, I'll be testing out the randomForestExplainer package.
 
+This package is part of the [DrWhy suite of packages](https://modeloriented.github.io/DrWhy/) for building and fine-tuning explainable ML models.
+
 ## Build a forest
 
 First we'll download some TCGA data, create our target predictor (1Y survival), and remove any genes which contribute nothing (0 counts all the way!).
@@ -263,5 +265,3 @@ plot_multi_way_importance(importance_frame,
                           size_measure = "p_value") 
 
 ```
-
-***TBC***

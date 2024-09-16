@@ -1,0 +1,110 @@
+---
+title: "tidymodels"
+description: "Exploring the new tidy models package"
+author: 
+  - name: Holly Hall
+    url: https://mdrnao.github.io
+date: 08-13-2024
+categories: [modeling, basics, tidy]
+draft: true
+bibliography: references.bib
+image: image.jpeg
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+## 
+
+```{r}
+
+suppressMessages(require(tidymodels) )
+tidymodels_prefer()
+```
+
+We'll use the Alzheimer's disease data from `modeldata`
+
+> Craig-Schapiro et al. (2011) describe a clinical study of 333 patients, including some with mild (but well-characterized) cognitive impairment as well as healthy individuals. CSF samples were taken from all subjects. The goal of the study was to determine if subjects in the early states of impairment could be differentiated from cognitively healthy individuals. Data collected on each subject included:
+>
+> -   Demographic characteristics such as age and gender
+>
+> -   Apolipoprotein E genotype
+>
+> -   Protein measurements of Abeta, Tau, and a phosphorylated version of Tau (called pTau)
+>
+> -   Protein measurements of 124 exploratory biomarkers, and
+>
+> -   Clinical dementia scores
+>
+> For these analyses, we have converted the scores to two classes: impaired and healthy. The goal of this analysis is to create classification models using the demographic and assay data to predict which patients have early stages of disease.
+
+```{r}
+require(modeldata)
+data(ad_data)
+glimpse(ad_data)
+
+```
+
+We have a number of double columns, one of which should really be a factor, and two factor columns.
+
+```{r}
+ad_data %>% 
+  skimr::skim(Genotype, Class, male) 
+```
+
+Split data
+
+```{r}
+
+set.seed(222)
+
+# Put 3/4 of the data into the training set 
+data_split <- initial_split(ad_data, prop = 3/4)
+
+# Create data frames for the two sets:
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+
+Create recipe
+
+```{r}
+ad_rec <- 
+  recipe(Class ~ ., data = train_data) %>%
+  step_dummy(all_nominal_predictors())
+
+summary(ad_rec) %>% View()
+```
+
+Fit a model
+
+```{r}
+lr_mod <- 
+  logistic_reg() %>% 
+  set_engine("glm")
+
+
+
+ad_wflow <- 
+  workflow() %>% 
+  add_model(lr_mod) %>% 
+  add_recipe(ad_rec)
+
+ad_wflow
+
+```
+
+```{r}
+ad_fit <- 
+  ad_wflow %>% 
+  fit(data = train_data)
+
+
+ad_fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy() %>% View()
+
+```

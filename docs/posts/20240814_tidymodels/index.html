@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Holly Hall">
+<meta name="dcterms.date" content="2024-08-13">
+<meta name="description" content="Exploring the new tidy models package">
+
+<title>Holly Hall - tidymodels</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Holly Hall</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">tidymodels</h1>
+                  <div>
+        <div class="description">
+          Exploring the new tidy models package
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">modeling</div>
+                <div class="quarto-category">basics</div>
+                <div class="quarto-category">tidy</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="https://mdrnao.github.io">Holly Hall</a> </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 13, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">require</span>(tidymodels) )</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We’ll use the Alzheimer’s disease data from <code>modeldata</code></p>
+<blockquote class="blockquote">
+<p>Craig-Schapiro et al.&nbsp;(2011) describe a clinical study of 333 patients, including some with mild (but well-characterized) cognitive impairment as well as healthy individuals. CSF samples were taken from all subjects. The goal of the study was to determine if subjects in the early states of impairment could be differentiated from cognitively healthy individuals. Data collected on each subject included:</p>
+<ul>
+<li><p>Demographic characteristics such as age and gender</p></li>
+<li><p>Apolipoprotein E genotype</p></li>
+<li><p>Protein measurements of Abeta, Tau, and a phosphorylated version of Tau (called pTau)</p></li>
+<li><p>Protein measurements of 124 exploratory biomarkers, and</p></li>
+<li><p>Clinical dementia scores</p></li>
+</ul>
+<p>For these analyses, we have converted the scores to two classes: impaired and healthy. The goal of this analysis is to create classification models using the demographic and assay data to predict which patients have early stages of disease.</p>
+</blockquote>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(modeldata)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ad_data)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ad_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 333
+Columns: 131
+$ ACE_CD143_Angiotensin_Converti   &lt;dbl&gt; 2.0031003, 1.5618560, 1.5206598, 1.68…
+$ ACTH_Adrenocorticotropic_Hormon  &lt;dbl&gt; -1.3862944, -1.3862944, -1.7147984, -…
+$ AXL                              &lt;dbl&gt; 1.09838668, 0.68328157, -0.14527630, …
+$ Adiponectin                      &lt;dbl&gt; -5.360193, -5.020686, -5.809143, -5.1…
+$ Alpha_1_Antichymotrypsin         &lt;dbl&gt; 1.7404662, 1.4586150, 1.1939225, 1.28…
+$ Alpha_1_Antitrypsin              &lt;dbl&gt; -12.631361, -11.909882, -13.642963, -…
+$ Alpha_1_Microglobulin            &lt;dbl&gt; -2.577022, -3.244194, -2.882404, -3.1…
+$ Alpha_2_Macroglobulin            &lt;dbl&gt; -72.65029, -154.61228, -136.52918, -9…
+$ Angiopoietin_2_ANG_2             &lt;dbl&gt; 1.06471074, 0.74193734, 0.83290912, 0…
+$ Angiotensinogen                  &lt;dbl&gt; 2.510547, 2.457283, 1.976365, 2.37608…
+$ Apolipoprotein_A_IV              &lt;dbl&gt; -1.427116, -1.660731, -1.660731, -2.1…
+$ Apolipoprotein_A1                &lt;dbl&gt; -7.402052, -7.047017, -7.684284, -8.0…
+$ Apolipoprotein_A2                &lt;dbl&gt; -0.26136476, -0.86750057, -0.65392647…
+$ Apolipoprotein_B                 &lt;dbl&gt; -4.624044, -6.747507, -3.976069, -6.5…
+$ Apolipoprotein_CI                &lt;dbl&gt; -1.2729657, -1.2729657, -1.7147984, -…
+$ Apolipoprotein_CIII              &lt;dbl&gt; -2.312635, -2.343407, -2.748872, -2.9…
+$ Apolipoprotein_D                 &lt;dbl&gt; 2.0794415, 1.3350011, 1.3350011, 1.43…
+$ Apolipoprotein_E                 &lt;dbl&gt; 3.7545215, 3.0971187, 2.7530556, 2.37…
+$ Apolipoprotein_H                 &lt;dbl&gt; -0.15734908, -0.57539617, -0.34483937…
+$ B_Lymphocyte_Chemoattractant_BL  &lt;dbl&gt; 2.2969819, 1.6731213, 1.6731213, 1.98…
+$ BMP_6                            &lt;dbl&gt; -2.200744, -1.728053, -2.062421, -1.9…
+$ Beta_2_Microglobulin             &lt;dbl&gt; 0.69314718, 0.47000363, 0.33647224, 0…
+$ Betacellulin                     &lt;int&gt; 34, 53, 49, 52, 67, 51, 41, 42, 58, 5…
+$ C_Reactive_Protein               &lt;dbl&gt; -4.074542, -6.645391, -8.047190, -6.2…
+$ CD40                             &lt;dbl&gt; -0.7964147, -1.2733760, -1.2415199, -…
+$ CD5L                             &lt;dbl&gt; 0.09531018, -0.67334455, 0.09531018, …
+$ Calbindin                        &lt;dbl&gt; 33.21363, 25.27636, 22.16609, 23.4558…
+$ Calcitonin                       &lt;dbl&gt; 1.3862944, 3.6109179, 2.1162555, -0.1…
+$ CgA                              &lt;dbl&gt; 397.6536, 465.6759, 347.8639, 334.234…
+$ Clusterin_Apo_J                  &lt;dbl&gt; 3.555348, 3.044522, 2.772589, 2.83321…
+$ Complement_3                     &lt;dbl&gt; -10.36305, -16.10824, -16.10824, -13.…
+$ Complement_Factor_H              &lt;dbl&gt; 3.5737252, 3.6000471, 4.4745686, 3.09…
+$ Connective_Tissue_Growth_Factor  &lt;dbl&gt; 0.5306283, 0.5877867, 0.6418539, 0.53…
+$ Cortisol                         &lt;dbl&gt; 10.0, 12.0, 10.0, 14.0, 11.0, 13.0, 4…
+$ Creatine_Kinase_MB               &lt;dbl&gt; -1.710172, -1.751002, -1.383559, -1.6…
+$ Cystatin_C                       &lt;dbl&gt; 9.041922, 9.067624, 8.954157, 9.58190…
+$ EGF_R                            &lt;dbl&gt; -0.1354543, -0.3700474, -0.7329871, -…
+$ EN_RAGE                          &lt;dbl&gt; -3.688879, -3.816713, -4.755993, -2.9…
+$ ENA_78                           &lt;dbl&gt; -1.349543, -1.356595, -1.390672, -1.3…
+$ Eotaxin_3                        &lt;int&gt; 53, 62, 62, 44, 64, 57, 64, 64, 64, 7…
+$ FAS                              &lt;dbl&gt; -0.08338161, -0.52763274, -0.63487827…
+$ FSH_Follicle_Stimulation_Hormon  &lt;dbl&gt; -0.6516715, -1.6272839, -1.5630004, -…
+$ Fas_Ligand                       &lt;dbl&gt; 3.1014922, 2.9788133, 1.3600098, 2.53…
+$ Fatty_Acid_Binding_Protein       &lt;dbl&gt; 2.5208712, 2.2477966, 0.9063009, 0.62…
+$ Ferritin                         &lt;dbl&gt; 3.329165, 3.932959, 3.176872, 3.13809…
+$ Fetuin_A                         &lt;dbl&gt; 1.2809338, 1.1939225, 1.4109870, 0.74…
+$ Fibrinogen                       &lt;dbl&gt; -7.035589, -8.047190, -7.195437, -7.7…
+$ GRO_alpha                        &lt;dbl&gt; 1.381830, 1.372438, 1.412679, 1.37243…
+$ Gamma_Interferon_induced_Monokin &lt;dbl&gt; 2.949822, 2.721793, 2.762231, 2.88547…
+$ Glutathione_S_Transferase_alpha  &lt;dbl&gt; 1.0641271, 0.8670202, 0.8890150, 0.70…
+$ HB_EGF                           &lt;dbl&gt; 6.559746, 8.754531, 7.745463, 5.94943…
+$ HCC_4                            &lt;dbl&gt; -3.036554, -4.074542, -3.649659, -3.8…
+$ Hepatocyte_Growth_Factor_HGF     &lt;dbl&gt; 0.58778666, 0.53062825, 0.09531018, 0…
+$ I_309                            &lt;dbl&gt; 3.433987, 3.135494, 2.397895, 3.36729…
+$ ICAM_1                           &lt;dbl&gt; -0.1907787, -0.4620172, -0.4620172, -…
+$ IGF_BP_2                         &lt;dbl&gt; 5.609472, 5.347108, 5.181784, 5.42495…
+$ IL_11                            &lt;dbl&gt; 5.121987, 4.936704, 4.665910, 6.22393…
+$ IL_13                            &lt;dbl&gt; 1.282549, 1.269463, 1.274133, 1.30754…
+$ IL_16                            &lt;dbl&gt; 4.192081, 2.876338, 2.616102, 2.44105…
+$ IL_17E                           &lt;dbl&gt; 5.731246, 6.705891, 4.149327, 4.69584…
+$ IL_1alpha                        &lt;dbl&gt; -6.571283, -8.047190, -8.180721, -7.6…
+$ IL_3                             &lt;dbl&gt; -3.244194, -3.912023, -4.645992, -4.2…
+$ IL_4                             &lt;dbl&gt; 2.484907, 2.397895, 1.824549, 1.48160…
+$ IL_5                             &lt;dbl&gt; 1.09861229, 0.69314718, -0.24846136, …
+$ IL_6                             &lt;dbl&gt; 0.26936976, 0.09622438, 0.18568645, -…
+$ IL_6_Receptor                    &lt;dbl&gt; 0.64279595, 0.43115645, 0.09668586, 0…
+$ IL_7                             &lt;dbl&gt; 4.8050453, 3.7055056, 1.0056222, 2.33…
+$ IL_8                             &lt;dbl&gt; 1.711325, 1.675557, 1.691393, 1.71994…
+$ IP_10_Inducible_Protein_10       &lt;dbl&gt; 6.242223, 5.686975, 5.049856, 5.60211…
+$ IgA                              &lt;dbl&gt; -6.812445, -6.377127, -6.319969, -7.6…
+$ Insulin                          &lt;dbl&gt; -0.6258253, -0.9431406, -1.4466191, -…
+$ Kidney_Injury_Molecule_1_KIM_1   &lt;dbl&gt; -1.204295, -1.197703, -1.191191, -1.2…
+$ LOX_1                            &lt;dbl&gt; 1.7047481, 1.5260563, 1.1631508, 1.22…
+$ Leptin                           &lt;dbl&gt; -1.5290628, -1.4660558, -1.6622675, -…
+$ Lipoprotein_a                    &lt;dbl&gt; -4.268698, -4.933674, -5.843045, -4.9…
+$ MCP_1                            &lt;dbl&gt; 6.740519, 6.849066, 6.767343, 6.78105…
+$ MCP_2                            &lt;dbl&gt; 1.9805094, 1.8088944, 0.4005958, 1.98…
+$ MIF                              &lt;dbl&gt; -1.237874, -1.897120, -2.302585, -1.6…
+$ MIP_1alpha                       &lt;dbl&gt; 4.968453, 3.690160, 4.049508, 4.92856…
+$ MIP_1beta                        &lt;dbl&gt; 3.258097, 3.135494, 2.397895, 3.21887…
+$ MMP_2                            &lt;dbl&gt; 4.478566, 3.781473, 2.866631, 2.96851…
+$ MMP_3                            &lt;dbl&gt; -2.207275, -2.465104, -2.302585, -1.7…
+$ MMP10                            &lt;dbl&gt; -3.270169, -3.649659, -2.733368, -4.0…
+$ MMP7                             &lt;dbl&gt; -3.7735027, -5.9681907, -4.0302269, -…
+$ Myoglobin                        &lt;dbl&gt; -1.89711998, -0.75502258, -1.38629436…
+$ NT_proBNP                        &lt;dbl&gt; 4.553877, 4.219508, 4.248495, 4.11087…
+$ NrCAM                            &lt;dbl&gt; 5.003946, 5.209486, 4.744932, 4.96981…
+$ Osteopontin                      &lt;dbl&gt; 5.356586, 6.003887, 5.017280, 5.76832…
+$ PAI_1                            &lt;dbl&gt; 1.00350156, -0.03059880, 0.43837211, …
+$ PAPP_A                           &lt;dbl&gt; -2.902226, -2.813276, -2.935541, -2.7…
+$ PLGF                             &lt;dbl&gt; 4.442651, 4.025352, 4.510860, 3.43398…
+$ PYY                              &lt;dbl&gt; 3.218876, 3.135494, 2.890372, 2.83321…
+$ Pancreatic_polypeptide           &lt;dbl&gt; 0.57878085, 0.33647224, -0.89159812, …
+$ Prolactin                        &lt;dbl&gt; 0.00000000, -0.51082562, -0.13926207,…
+$ Prostatic_Acid_Phosphatase       &lt;dbl&gt; -1.620527, -1.739232, -1.636682, -1.7…
+$ Protein_S                        &lt;dbl&gt; -1.784998, -2.463991, -2.259135, -2.7…
+$ Pulmonary_and_Activation_Regulat &lt;dbl&gt; -0.8439701, -2.3025851, -1.6607312, -…
+$ RANTES                           &lt;dbl&gt; -6.214608, -6.938214, -6.645391, -5.9…
+$ Resistin                         &lt;dbl&gt; -16.475315, -16.025283, -16.475315, -…
+$ S100b                            &lt;dbl&gt; 1.5618560, 1.7566212, 1.4357282, 1.25…
+$ SGOT                             &lt;dbl&gt; -0.94160854, -0.65392647, 0.33647224,…
+$ SHBG                             &lt;dbl&gt; -1.897120, -1.560648, -2.207275, -3.1…
+$ SOD                              &lt;dbl&gt; 5.609472, 5.814131, 5.723585, 5.77144…
+$ Serum_Amyloid_P                  &lt;dbl&gt; -5.599422, -6.119298, -5.381699, -6.6…
+$ Sortilin                         &lt;dbl&gt; 4.908629, 5.478731, 3.810182, 3.40217…
+$ Stem_Cell_Factor                 &lt;dbl&gt; 4.174387, 3.713572, 3.433987, 3.95124…
+$ TGF_alpha                        &lt;dbl&gt; 8.649098, 11.331619, 10.858497, 9.454…
+$ TIMP_1                           &lt;dbl&gt; 15.204651, 11.266499, 12.282857, 11.1…
+$ TNF_RII                          &lt;dbl&gt; -0.06187540, -0.32850407, -0.41551544…
+$ TRAIL_R3                         &lt;dbl&gt; -0.1829004, -0.5007471, -0.9240345, -…
+$ TTR_prealbumin                   &lt;dbl&gt; 2.944439, 2.833213, 2.944439, 2.94443…
+$ Tamm_Horsfall_Protein_THP        &lt;dbl&gt; -3.095810, -3.111190, -3.166721, -3.1…
+$ Thrombomodulin                   &lt;dbl&gt; -1.340566, -1.675252, -1.534276, -1.9…
+$ Thrombopoietin                   &lt;dbl&gt; -0.1026334, -0.6733501, -0.9229670, -…
+$ Thymus_Expressed_Chemokine_TECK  &lt;dbl&gt; 4.149327, 3.810182, 2.791992, 4.03728…
+$ Thyroid_Stimulating_Hormone      &lt;dbl&gt; -3.863233, -4.828314, -4.990833, -4.8…
+$ Thyroxine_Binding_Globulin       &lt;dbl&gt; -1.4271164, -1.6094379, -1.8971200, -…
+$ Tissue_Factor                    &lt;dbl&gt; 2.04122033, 2.02814825, 1.43508453, 2…
+$ Transferrin                      &lt;dbl&gt; 3.332205, 2.890372, 2.890372, 2.89037…
+$ Trefoil_Factor_3_TFF3            &lt;dbl&gt; -3.381395, -3.912023, -3.729701, -3.8…
+$ VCAM_1                           &lt;dbl&gt; 3.258097, 2.708050, 2.639057, 2.77258…
+$ VEGF                             &lt;dbl&gt; 22.03456, 18.60184, 17.47619, 17.5456…
+$ Vitronectin                      &lt;dbl&gt; -0.04082199, -0.38566248, -0.22314355…
+$ von_Willebrand_Factor            &lt;dbl&gt; -3.146555, -3.863233, -3.540459, -3.8…
+$ age                              &lt;dbl&gt; 0.9876238, 0.9861496, 0.9866667, 0.98…
+$ tau                              &lt;dbl&gt; 6.297754, 6.659294, 6.270988, 6.15273…
+$ p_tau                            &lt;dbl&gt; 4.348108, 4.859967, 4.400247, 4.49488…
+$ Ab_42                            &lt;dbl&gt; 12.019678, 11.015759, 12.302271, 12.3…
+$ male                             &lt;dbl&gt; 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1…
+$ Genotype                         &lt;fct&gt; E3E3, E3E4, E3E4, E3E4, E3E3, E4E4, E…
+$ Class                            &lt;fct&gt; Control, Control, Control, Control, C…</code></pre>
+</div>
+</div>
+<p>We have a number of double columns, one of which should really be a factor, and two factor columns.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ad_data <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  skimr<span class="sc">::</span><span class="fu">skim</span>(Genotype, Class, male) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">Piped data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">333</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">131</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 10%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: left;">ordered</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: left;">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Genotype</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">E3E: 167, E3E: 106, E2E: 37, E4E: 13</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Class</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Con: 242, Imp: 91</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">male</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">▇▁▁▁▅</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Split data</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Put 3/4 of the data into the training set </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(ad_data, <span class="at">prop =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create data frames for the two sets:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Create recipe</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ad_rec <span class="ot">&lt;-</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Class <span class="sc">~</span> ., <span class="at">data =</span> train_data) </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ad_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 131 × 4
+   variable                        type      role      source  
+   &lt;chr&gt;                           &lt;list&gt;    &lt;chr&gt;     &lt;chr&gt;   
+ 1 ACE_CD143_Angiotensin_Converti  &lt;chr [2]&gt; predictor original
+ 2 ACTH_Adrenocorticotropic_Hormon &lt;chr [2]&gt; predictor original
+ 3 AXL                             &lt;chr [2]&gt; predictor original
+ 4 Adiponectin                     &lt;chr [2]&gt; predictor original
+ 5 Alpha_1_Antichymotrypsin        &lt;chr [2]&gt; predictor original
+ 6 Alpha_1_Antitrypsin             &lt;chr [2]&gt; predictor original
+ 7 Alpha_1_Microglobulin           &lt;chr [2]&gt; predictor original
+ 8 Alpha_2_Macroglobulin           &lt;chr [2]&gt; predictor original
+ 9 Angiopoietin_2_ANG_2            &lt;chr [2]&gt; predictor original
+10 Angiotensinogen                 &lt;chr [2]&gt; predictor original
+# ℹ 121 more rows</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
