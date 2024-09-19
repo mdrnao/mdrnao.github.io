@@ -10,5 +10,11 @@
       "/posts/20240805_linear_regression/index.html",
       "/posts/20230901_publications_how_to/index.html"
     ]
+  },
+  {
+    "listing": "/projects.html",
+    "items": [
+      "/projects/HuMo_GEMM/index.html"
+    ]
   }
 ]

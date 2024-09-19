@@ -1,0 +1,20 @@
+---
+title: "HuMo Shiny App"
+description: ""
+author: 
+  - name: Holly Hall
+    url: https://mdrnao.github.io
+date: 09-19-2024
+categories: [Shiny, HuMo]
+image: image.png
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+<iframe height="800" width="100%" frameborder="no" src=" http://shinyapps.crukscotlandinstitute.ac.uk/humo_app/">
+
+</iframe>

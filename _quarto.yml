@@ -12,7 +12,8 @@ website:
         text: Publications
       - href: posts.qmd
         text: Notes
-
+      - href: projects.qmd
+        text: Projects
 format:
   html:
     theme: flatly
