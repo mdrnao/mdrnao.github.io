@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Holly Hall">
-<meta name="dcterms.date" content="2024-09-19">
-<meta name="description" content="Things I want to remember for future building of shiny apps!">
+<meta name="dcterms.date" content="2024-09-16">
+<meta name="description" content="Exploring the basics of Nextflow">
 
-<title>Holly Hall - Shiny apps</title>
+<title>Holly Hall - Nextflow basics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -114,16 +114,16 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Shiny apps</h1>
+      <h1 class="title">Nextflow basics</h1>
                   <div>
         <div class="description">
-          Things I want to remember for future building of shiny apps!
+          Exploring the basics of Nextflow
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">Shiny</div>
+                <div class="quarto-category">Nextflow</div>
+                <div class="quarto-category">basics</div>
                 <div class="quarto-category">workflows</div>
-                <div class="quarto-category">R</div>
               </div>
                   </div>
   </div>
@@ -141,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 19, 2024</p>
+        <p class="date">September 16, 2024</p>
       </div>
     </div>
     
@@ -157,10 +157,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#error-handling-and-validation" id="toc-error-handling-and-validation" class="nav-link active" data-scroll-target="#error-handling-and-validation">Error handling and validation</a>
-  <ul class="collapse">
-  <li><a href="#file-import" id="toc-file-import" class="nav-link" data-scroll-target="#file-import">File import</a></li>
-  </ul></li>
+  <li><a href="#intro" id="toc-intro" class="nav-link active" data-scroll-target="#intro">Intro</a></li>
+  <li><a href="#script-makeup" id="toc-script-makeup" class="nav-link" data-scroll-target="#script-makeup">Script makeup:</a></li>
+  <li><a href="#other-snippets-of-useful-info" id="toc-other-snippets-of-useful-info" class="nav-link" data-scroll-target="#other-snippets-of-useful-info">Other snippets of useful info</a></li>
   </ul>
 </nav>
     </div>
@@ -171,26 +170,63 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="error-handling-and-validation" class="level2">
-<h2 class="anchored" data-anchor-id="error-handling-and-validation">Error handling and validation</h2>
-<section id="file-import" class="level3">
-<h3 class="anchored" data-anchor-id="file-import">File import</h3>
-<p>This is a reactive function, which requires an input data file to be uploaded.</p>
-<p><code>tools::file_ext(input$filedata$name)</code> is used to determine the extension of the file which is uploaded. This is then passed to a <code>switch</code> function, which evaluates the expression and accordingly chooses which of the arguments to execute (in our case how the file is read). The <code>validate</code> function will display an error message of our choosing if an error is tripped. This is useful since R error messages are typically confusing for a non-coder.</p>
-<blockquote class="blockquote">
-<p><code>userdata &lt;- reactive({</code></p>
-<p><code>req(input$filedata)</code></p>
-<p><code>ext &lt;- tools::file_ext(input$filedata$name)</code></p>
-<p><code>switch(ext,</code></p>
-<p><code>csv = read.csv(input$filedata$datapath),</code></p>
-<p><code>tsv = read.delim(input$filedata$datapath),</code></p>
-<p><code>validate("Invalid file; Please upload a .csv or .tsv file") )  })</code></p>
-</blockquote>
-<iframe height="800" width="100%" frameborder="no" src=" http://shinyapps.crukscotlandinstituteac.uk/humo_app/">
-</iframe>
-
-
+<section id="intro" class="level2">
+<h2 class="anchored" data-anchor-id="intro">Intro</h2>
+<p>Workflows produced by Nextflow are great for:</p>
+<ul>
+<li>Parallelism
+<ul>
+<li>Automatic, needs no background knowledge</li>
+</ul></li>
+<li>Reentrancy
+<ul>
+<li>resume flag can be used if previous steps have worked successfully</li>
+</ul></li>
+<li>Reproducibility
+<ul>
+<li>Easily shared, integrated code management and containerisation</li>
+</ul></li>
+</ul>
+<p>Nextflow is a language, and a runtime. Code can be written in any code (bash, R, etc). The tasks are orchestrated with dataflow programming. Software dependencies can be defined within containers (docker etc). Git is built in for version control.</p>
 </section>
+<section id="script-makeup" class="level2">
+<h2 class="anchored" data-anchor-id="script-makeup">Script makeup:</h2>
+<p><code>#!usr/bin/env nextflow</code></p>
+<p>Start off the script with declaring this will be a nextflow executable. Optional since we’ll always be calling the script with nextflow.</p>
+<p>Every script starts with a channel, so variables at the top tend to be declared with <code>Channel.</code>.</p>
+<p>Next comes processes. Good practice to name processes in capital letters to distinguish them from functions.</p>
+<blockquote class="blockquote">
+<p><code>process NAMEOFPROCESS {</code></p>
+<p><code>input:</code></p>
+<p><em><code>val x</code></em></p>
+<p><code>output:</code></p>
+<p><em><code>path 'chunk *'</code></em></p>
+<p><code>script:</code></p>
+<p><code>"""</code></p>
+<p><em><code>some code</code></em></p>
+<p><code>""""</code></p>
+<p><code>}</code></p>
+</blockquote>
+<p>You always need an input, output, and script block. Declaring the input and output tells the program what to expect. The one above declares that the input is a value, and the output is a path. The benefit of this, especially with programs which output many files, is that you can save only those outputs which you actually want.</p>
+<p>If you want your script to use another language other than bash, you should declare it at the top of the script: e.g.&nbsp;<code>#!/usr/bin/env python</code></p>
+<blockquote class="blockquote">
+<p><code>workflow {</code></p>
+<p><code>variable_1 = PROCESS(value)</code></p>
+<p><code>variable_2 = PROCESS2(variable_1)</code></p>
+<p><code>variable_2.view { it }</code></p>
+<p><code>}</code></p>
+</blockquote>
+<p>We end with the workflow. This will execute the processes and name the variables. <code>varible_2.view</code> can be used to view the output. If the output is a path, it’ll print the paths, if the output is a value, it’ll print the value etc.</p>
+</section>
+<section id="other-snippets-of-useful-info" class="level2">
+<h2 class="anchored" data-anchor-id="other-snippets-of-useful-info">Other snippets of useful info</h2>
+<p><code>//</code> can be used to comment out lines.</p>
+<p>Nextflow output always includes unique hashes. One line is outputted per process (can be changed per task with flags). Each process has a unique hash.</p>
+<p>Because of the paralellisation, outputs are generated as the input files are generated. If the order is important, sample IDs can be generated.</p>
+<p><code>-resume</code> can be added to the workflow run to only redo processes which has changed. All other processes will be pulled from the cache.</p>
+<p>Parameters declared at the top of the script can be changed by flags. e.g.&nbsp;<code>params.greeting = "hello world"</code> adds a parameter called <code>greeting</code> which can be used in the processes/workflow. When calling the nextflow script, if <code>-greeting "This is a new greeting"</code> is used, the new string will be used instead.</p>
+
+
 </section>
 
 </main> <!-- /main -->

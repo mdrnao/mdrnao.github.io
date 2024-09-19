@@ -1,0 +1,88 @@
+---
+title: "Nextflow basics"
+description: "Exploring the basics of Nextflow"
+author: 
+  - name: Holly Hall
+    url: https://mdrnao.github.io
+date: 09-16-2024
+categories: [Nextflow, basics, workflows]
+bibliography: references.bib
+image: image.png
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+## Intro
+
+Workflows produced by Nextflow are great for:
+
+-   Parallelism
+    -   Automatic, needs no background knowledge
+-   Reentrancy
+    -   resume flag can be used if previous steps have worked successfully
+-   Reproducibility
+    -   Easily shared, integrated code management and containerisation
+
+Nextflow is a language, and a runtime. Code can be written in any code (bash, R, etc). The tasks are orchestrated with dataflow programming. Software dependencies can be defined within containers (docker etc). Git is built in for version control.
+
+## Script makeup:
+
+`#!usr/bin/env nextflow`
+
+Start off the script with declaring this will be a nextflow executable. Optional since we'll always be calling the script with nextflow.
+
+Every script starts with a channel, so variables at the top tend to be declared with `Channel.`.
+
+Next comes processes. Good practice to name processes in capital letters to distinguish them from functions.
+
+> `process NAMEOFPROCESS {`
+>
+> `input:`
+>
+> *`val x`*
+>
+> `output:`
+>
+> *`path 'chunk *'`*
+>
+> `script:`
+>
+> `"""`
+>
+> *`some code`*
+>
+> `""""`
+>
+> `}`
+
+You always need an input, output, and script block. Declaring the input and output tells the program what to expect. The one above declares that the input is a value, and the output is a path. The benefit of this, especially with programs which output many files, is that you can save only those outputs which you actually want.
+
+If you want your script to use another language other than bash, you should declare it at the top of the script: e.g. `#!/usr/bin/env python`
+
+> `workflow {`
+>
+> `variable_1 = PROCESS(value)`
+>
+> `variable_2 = PROCESS2(variable_1)`
+>
+> `variable_2.view { it }`
+>
+> `}`
+
+We end with the workflow. This will execute the processes and name the variables. `varible_2.view` can be used to view the output. If the output is a path, it'll print the paths, if the output is a value, it'll print the value etc.
+
+## Other snippets of useful info
+
+`//` can be used to comment out lines.
+
+Nextflow output always includes unique hashes. One line is outputted per process (can be changed per task with flags). Each process has a unique hash.
+
+Because of the paralellisation, outputs are generated as the input files are generated. If the order is important, sample IDs can be generated.
+
+`-resume` can be added to the workflow run to only redo processes which has changed. All other processes will be pulled from the cache.
+
+Parameters declared at the top of the script can be changed by flags. e.g. `params.greeting = "hello world"` adds a parameter called `greeting` which can be used in the processes/workflow. When calling the nextflow script, if `-greeting "This is a new greeting"` is used, the new string will be used instead.

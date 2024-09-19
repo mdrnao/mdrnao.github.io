@@ -1,7 +1,42 @@
 ---
-title: "HuMo app"
+title: "Shiny apps"
+description: "Things I want to remember for future building of shiny apps!"
+author: 
+  - name: Holly Hall
+    url: https://mdrnao.github.io
+date: 09-19-2024
+categories: [Shiny, workflows, R]
+image: image.png
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
 ---
 
+## Error handling and validation
 
-<iframe height="800" width="100%" frameborder="no" src=" https://hollyehall.shinyapps.ioHuMo_app/"> </iframe>
+### File import
 
+This is a reactive function, which requires an input data file to be uploaded.
+
+`tools::file_ext(input$filedata$name)` is used to determine the extension of the file which is uploaded. This is then passed to a `switch` function, which evaluates the expression and accordingly chooses which of the arguments to execute (in our case how the file is read). The `validate` function will display an error message of our choosing if an error is tripped. This is useful since R error messages are typically confusing for a non-coder.
+
+> `userdata <- reactive({`
+>
+> `req(input$filedata)`
+>
+> `ext <- tools::file_ext(input$filedata$name)`
+>
+> `switch(ext,`
+>
+> `csv = read.csv(input$filedata$datapath),`
+>
+> `tsv = read.delim(input$filedata$datapath),`
+>
+> `validate("Invalid file; Please upload a .csv or .tsv file") )  })`
+
+<iframe height="800" width="100%" frameborder="no" src=" http://shinyapps.crukscotlandinstituteac.uk/humo_app/">
+
+</iframe>
