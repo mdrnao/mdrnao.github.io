@@ -85,4 +85,14 @@ Because of the paralellisation, outputs are generated as the input files are gen
 
 `-resume` can be added to the workflow run to only redo processes which has changed. All other processes will be pulled from the cache.
 
-Parameters declared at the top of the script can be changed by flags. e.g. `params.greeting = "hello world"` adds a parameter called `greeting` which can be used in the processes/workflow. When calling the nextflow script, if `-greeting "This is a new greeting"` is used, the new string will be used instead.
+Parameters declared at the top of the script can be changed by flags. e.g. `params.greeting = "hello world"` adds a parameter called `greeting` which can be used in the processes/workflow. When calling the nextflow script, if `--greeting "This is a new greeting"` is used, the new string will be used instead. The declarations can also be within the workflow block.
+
+`publishDir 'results', mode: 'copy'` within the process will copy the output file into a new directory called "results". A newer syntax can be found [here](https://www.nextflow.io/docs/latest/workflow.html#publishing-outputs).
+
+A double hyphen (`--`) is used to set a `params` item while a single hyphen (`-`) is used to modify a Nextflow setting, e.g. the `-resume` feature we used earlier.
+
+You have to use double quotes around the filename expression (NOT single quotes) or it will fail: `output: path "UPPER-${input_file}"`
+
+Change the output file to a tuple to ensure files pass through together.
+
+**Beware of channel factory types!** You can have a *queue* and a *value* channel. This becomes important when a process requires multiple channel inputs, and only one of those channels has multiple values. The queue channels will match up their lengths, whereas the value channels can be used repetitively. Change a queue to a value type by using the `.first()`operator in your channel declaration.

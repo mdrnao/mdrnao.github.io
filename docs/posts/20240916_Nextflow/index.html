@@ -228,7 +228,12 @@ ul.task-list li input[type="checkbox"] {
 <p>Nextflow output always includes unique hashes. One line is outputted per process (can be changed per task with flags). Each process has a unique hash.</p>
 <p>Because of the paralellisation, outputs are generated as the input files are generated. If the order is important, sample IDs can be generated.</p>
 <p><code>-resume</code> can be added to the workflow run to only redo processes which has changed. All other processes will be pulled from the cache.</p>
-<p>Parameters declared at the top of the script can be changed by flags. e.g.&nbsp;<code>params.greeting = "hello world"</code> adds a parameter called <code>greeting</code> which can be used in the processes/workflow. When calling the nextflow script, if <code>-greeting "This is a new greeting"</code> is used, the new string will be used instead.</p>
+<p>Parameters declared at the top of the script can be changed by flags. e.g.&nbsp;<code>params.greeting = "hello world"</code> adds a parameter called <code>greeting</code> which can be used in the processes/workflow. When calling the nextflow script, if <code>--greeting "This is a new greeting"</code> is used, the new string will be used instead. The declarations can also be within the workflow block.</p>
+<p><code>publishDir 'results', mode: 'copy'</code> within the process will copy the output file into a new directory called “results”. A newer syntax can be found <a href="https://www.nextflow.io/docs/latest/workflow.html#publishing-outputs">here</a>.</p>
+<p>A double hyphen (<code>--</code>) is used to set a&nbsp;<code>params</code>&nbsp;item while a single hyphen (<code>-</code>) is used to modify a Nextflow setting, e.g.&nbsp;the&nbsp;<code>-resume</code>&nbsp;feature we used earlier.</p>
+<p>You have to use double quotes around the filename expression (NOT single quotes) or it will fail: <code>output: path "UPPER-${input_file}"</code></p>
+<p>Change the output file to a tuple to ensure files pass through together.</p>
+<p><strong>Beware of channel factory types!</strong> You can have a <em>queue</em> and a <em>value</em> channel. This becomes important when a process requires multiple channel inputs, and only one of those channels has multiple values. The queue channels will match up their lengths, whereas the value channels can be used repetitively. Change a queue to a value type by using the <code>.first()</code>operator in your channel declaration.</p>
 
 
 </section>
